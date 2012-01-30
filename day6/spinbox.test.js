@@ -71,6 +71,53 @@ var SpinBox = function(TextElement, UpElement, DownElement, Option) {
 		update();
 	};
 	
+	this.test = function() {
+
+		module("SpinBox");
+		
+		test("check Up/Down", function() {
+			var t1 = _nValue;
+			Inc();			
+			equal(_elText.value, t1+1, "Check Value 1");
+			Dec();
+			equal(_elText.value, t1, "Check Value 2");
+			
+			if(typeof _Option.max == 'number'){
+				_nValue = _Option.max;
+				update();
+				Inc();
+				equal(_elText.value, _Option.max, "Check Value (max)");
+			}
+			
+			if(typeof _Option.min == 'number'){
+				_nValue = _Option.min;
+				update();
+				Dec();
+				equal(_elText.value, _Option.min, "Check Value (min)");
+			}
+			
+		});
+
+		test("checkRange", function() {
+			_nValue = _Option.max+_Option.max;
+			checkRange();
+			update();
+			
+			ok(_nValue == _Option.max, "Range");
+		});
+		
+		test("checkWrongChar", function() {
+			_elText.value = "-a1b2c3b";
+			onLeaveFocus();
+			equal(_elText.value, 100, "Check Wrong Char 1");
+			
+			_elText.value = "afd12egf3";
+			onLeaveFocus();
+			equal(_elText.value, 123, "Check Wrong Char 2");
+		});
+		
+	};
+	
 	init();
 };
 
@@ -121,6 +168,17 @@ var KeepPressingButton = function(ButtonElement, Option) {
 		//Event
 		addEvent(_elButton, 'mousedown', onMouseDown);
 		addEvent(document, 'mouseup', onMouseUp);
+	};
+	
+	
+	this.testInit = function(firstInterval, interval){
+		module("KeepPressingButton");
+
+		test("InitValue", function() {
+			equal(_Option.firstInterval, firstInterval, "firstInterval");
+			equal(_Option.interval, interval, "interval");
+		});
+
 	};
 	
 	init();
