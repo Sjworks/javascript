@@ -33,7 +33,9 @@ function dragable(Element, TargetElement, dropCallback) {
 		deltaY = startY - orignY;
 		
 		_elClone = Element.cloneNode(true);
-		_elClone.setAttribute('id', '');
+		_elClone.removeAttribute('id');
+		_elClone.removeAttribute('class');
+		copyComputedStyle(Element, _elClone);
 		
 		
 		_elClone.style.cssText = getCssText(Element);
@@ -76,12 +78,32 @@ function dragable(Element, TargetElement, dropCallback) {
 		if(e.stopPropagation) e.stopPropagation();
 		else e.cancelBubble = true;
 	}
-	
-	function getCssText(Element){
-		if(Element.currentStyle){
-			return Element.currentStyle.cssText;
-		}else if(window.getComputedStyle){
-			return window.getComputedStyle(Element, null).cssText;
-		}
-	}
+		
+	function realStyle(_elem, _style) {
+	    var computedStyle;
+	    if ( typeof _elem.currentStyle != 'undefined' ) {
+	        computedStyle = _elem.currentStyle;
+	    } else {
+	        computedStyle = document.defaultView.getComputedStyle(_elem, null);
+	    }
+
+	    return _style ? computedStyle[_style] : computedStyle;
+	};
+
+	function copyComputedStyle(src, dest) {
+	    var s = realStyle(src);
+	    for ( var i in s ) {
+	        if ( typeof i == "string" && i != "cssText" && !/\d/.test(i) ) {
+	                try {
+	                        dest.style[i] = s[i];
+	                        // `fontSize` comes before `font` If `font` is empty, `fontSize` gets
+	                        // overwritten.  So make sure to reset this property. (hackyhackhack)
+	                        // Other properties may need similar treatment
+	                        if ( i == "font" ) {
+	                                dest.style.fontSize = s.fontSize;
+	                        }
+	                } catch (e) {}
+	        }
+	    }
+	};
 }
