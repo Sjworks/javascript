@@ -2,9 +2,59 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>자판기</title>
+<link rel="stylesheet" type="text/css" href="vending_machine.css"> 
+<script type="text/javascript" src="console.js"></script>
+<script type="text/javascript" src="goods_display.js"></script>
+<script type="text/javascript" src="dragable.js"></script>
+<script type="text/javascript" src="coin_panel.js"></script>
 </head>
 <body>
+
+<div id="vending_machine">
+
+<div id="display_panel">
+<ul id="shelf">
+<!-- 
+<li class="goods"><span class="name">얏호</span><span class="price">1000원</span></li>
+<li class="goods"></li>
+<li class="goods"></li>
+<li class="goods"></li>
+<li class="goods"></li>
+<li class="goods"></li>
+<li class="goods"></li>
+<li class="goods"></li>
+ -->
+</ul>
+</div>
+<div id="coin_panel">
+<div id="insert">1000원</div>
+<a id="btnReturn" href="#">반환버튼</a>
+<div id="wallet">
+<ul id="coins">
+<li class="coin"><div class="money"></div><span class="money_name">50원</span></li>
+<li class="coin"><div class="money"></div><span class="money_name">100원</span></li>
+<li class="coin"><div class="money"></div><span class="money_name">500원</span></li>
+<li class="coin"><div class="money"></div><span class="money_name">1000원</span></li>
+</ul>
+<span id="my_money">지금 내 돈 : 10000원</span>
+</div>
+</div>
+<div id="console">
+<div id="page"><p>안녕하세요. 동전을 투입 후 상품을 선택해 주세요.</p></div>
+</div>
+</div>
+
+<script type="text/javascript">
+var log;
+log = new Console(document.getElementById('console'), document.getElementById('page'));
+log.write('test');
+
+var shelf = document.getElementById('shelf');
+var goodsDisplay = new GoodsDisplay(shelf);
+
+
+</script>
 
 </body>
 </html>
