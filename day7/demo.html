@@ -27,7 +27,7 @@ border: solid 2px black;
 <script type="text/javascript">
 window.onload = function(){
 	var drag = document.getElementById('drag');
-	dragable(drag, document.getElementById('drop'), function(){ alert('Drop'); });
+	dragable(drag, document.getElementById('drop'), function(target){ if(target)alert('Drop'); });
 	
 }
 </script>

@@ -7,7 +7,7 @@ function dragable(Element, TargetElement, dropCallback) {
 	var deltaX, deltaY;
 	
 	var _elClone;
-	var _elParent = Element.parentNode;
+	//var _elParent = Element.parentNode;
 	
 	if(document.addEventListener) {
 		Element.addEventListener("mousedown", onMousedown, true);
@@ -24,24 +24,21 @@ function dragable(Element, TargetElement, dropCallback) {
 	
 	function onMousedown(e){
 		if(!e) e = window.event;
-		
+			
 		var rect = Element.getBoundingClientRect();
 		startX = e.clientX;
 		startY = e.clientY;
-		orignX = rect.left; //Element.offsetLeft;
-		orignY = rect.top; //Element.offsetTop;
+		orignX = rect.left+scrollX();//Element.offsetLeft;
+		orignY = rect.top+scrollY();//Element.offsetTop;
 		deltaX = startX - orignX;
 		deltaY = startY - orignY;
+		console.debug('startY:' +startY+', orignY:'+orignY+', deltaY:'+deltaY);
 		
 		_elClone = Element.cloneNode(true);
 		_elClone.removeAttribute('id');
-		//_elClone.removeAttribute('class');
-		copyComputedStyle(Element, _elClone);
 		
-		
-		//_elClone.style.cssText = getCssText(Element);
 		_elClone.style.zIndex = 1000;
-		_elParent.appendChild(_elClone);
+		document.body.appendChild(_elClone);
 		
 		if (e.stopPropagation) e.stopPropagation();
 		else e.cancelBubble = true;
@@ -50,6 +47,7 @@ function dragable(Element, TargetElement, dropCallback) {
 		else e.returnValue = false;
 		
 		_bDown = true;
+		onMousemove(e);
 	}
 	
 	function onMousemove(e){
@@ -67,45 +65,29 @@ function dragable(Element, TargetElement, dropCallback) {
 		if(!e) e = window.event;
 		if(!_bDown) return;
 		
-		_elParent.removeChild(_elClone);
-		var rect = TargetElement.getBoundingClientRect();
-		
-		if((e.clientX - deltaX) > rect.left-Element.offsetWidth && (e.clientX - deltaX) < rect.left+Element.offsetWidth &&
-				(e.clientY - deltaY) > rect.top-Element.offsetHeight && (e.clientY - deltaY) < rect.top+Element.offsetHeight){
-			if(typeof dropCallback == 'function')
-				dropCallback();
+		var targetRect = TargetElement.getBoundingClientRect();
+		var cloneRect = _elClone.getBoundingClientRect();
+		var targetDrop;	
+		if(cloneRect.right > targetRect.left && cloneRect.left < targetRect.right &&
+				cloneRect.top < targetRect.bottom && cloneRect.bottom > targetRect.top){
+			targetDrop = true;
+		} else {
+			targetDrop = false;
 		}
+		if(typeof dropCallback == 'function')
+			dropCallback(targetDrop);
 	
+		document.body.removeChild(_elClone);
 		_bDown = false;
 		if(e.stopPropagation) e.stopPropagation();
-		else e.cancelBubble = true;
+		else e.cancelBubble = true;		
 	}
-		
-	function realStyle(_elem, _style) {
-	    var computedStyle;
-	    if ( typeof _elem.currentStyle != 'undefined' ) {
-	        computedStyle = _elem.currentStyle;
-	    } else {
-	        computedStyle = document.defaultView.getComputedStyle(_elem, null);
-	    }
+	
+	function scrollX() {
+		return window.pageXOffset ? window.pageXOffset : document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft;
+	}
+	function scrollY() {
+		return window.pageYOffset ? window.pageYOffset : document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
+	}
 
-	    return _style ? computedStyle[_style] : computedStyle;
-	};
-
-	function copyComputedStyle(src, dest) {
-	    var s = realStyle(src);
-	    for ( var i in s ) {
-	        if ( typeof i == "string" && i != "cssText" && !/\d/.test(i) ) {
-	                try {
-	                        dest.style[i] = s[i];
-	                        // `fontSize` comes before `font` If `font` is empty, `fontSize` gets
-	                        // overwritten.  So make sure to reset this property. (hackyhackhack)
-	                        // Other properties may need similar treatment
-	                        if ( i == "font" ) {
-	                                dest.style.fontSize = s.fontSize;
-	                        }
-	                } catch (e) {}
-	        }
-	    }
-	};
 }
