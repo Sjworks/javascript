@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Drag & Drop Demo</title>
 <style type="text/css">
-#dragable {
+.dragable {
 position: absolute;;
 left:100px;
 top:200px;
@@ -13,7 +13,7 @@ height: 70px;
 background-color: red;
 border: solid 2px black;
 }
-#target {
+.target {
 position: absolute;
 left: 300px;
 top: 150px;
@@ -33,7 +33,7 @@ window.onload = function(){
 </script>
 </head>
 <body>
-<div id="dragable">dragable</div>
-<div id="target">target</div>
+<div id="drag" class="dragable">dragable</div>
+<div id="drop" class="target">target</div>
 </body>
 </html>

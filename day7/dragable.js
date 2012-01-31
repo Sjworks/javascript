@@ -34,11 +34,11 @@ function dragable(Element, TargetElement, dropCallback) {
 		
 		_elClone = Element.cloneNode(true);
 		_elClone.removeAttribute('id');
-		_elClone.removeAttribute('class');
+		//_elClone.removeAttribute('class');
 		copyComputedStyle(Element, _elClone);
 		
 		
-		_elClone.style.cssText = getCssText(Element);
+		//_elClone.style.cssText = getCssText(Element);
 		_elClone.style.zIndex = 1000;
 		_elParent.appendChild(_elClone);
 		
