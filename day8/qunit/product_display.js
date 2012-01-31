@@ -36,8 +36,23 @@ var ProductDisplay = function(ShelfElement) {
 		}
 		
 	};
+
+	this.testProductDisplay = function(){
+		test("Product", function(){
+			var nowAmount = _aProduct[7].getAmount();
+			_aProduct[7].sale();
+			equal(_aProduct[7].getAmount(), nowAmount-1, 'Amount Count Test');
+			_aProduct[7].sale();
+			_aProduct[7].sale();
+			_aProduct[7].sale();
+			_aProduct[7].sale();
+			equal(_aProduct[7].getAmount(), 0, 'Soldout Count Test');
+		});
+	};
 	
 	_init();
+	
+
 };
 
 /**

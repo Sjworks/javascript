@@ -4,13 +4,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>자판기</title>
 <link rel="stylesheet" type="text/css" href="vending_machine.css">
-
+<link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen" />
+<script type="text/javascript" src="http://code.jquery.com/qunit/git/qunit.js"></script> 
 <script type="text/javascript" src="console.js"></script>
 <script type="text/javascript" src="dragable.js"></script>
 <script type="text/javascript" src="product_display.js"></script>
 <script type="text/javascript" src="vending_machine.js"></script>
 </head>
 <body>
+<h1 id="qunit-header">QUnit Test</h1>
+ <h2 id="qunit-banner"></h2>
+ <div id="qunit-testrunner-toolbar"></div>
+ <h2 id="qunit-userAgent"></h2>
+ <ol id="qunit-tests"></ol>
+ <div id="qunit-fixture">test markup, will be hidden</div>
+<div id="vending_machine">
 
 <div id="display_panel">
 <ul id="shelf">
@@ -47,6 +55,7 @@
 
 <script type="text/javascript">
 	var vendingMachine = new VendingMachine();
+	vendingMachine.QUnitTest();
 </script>
 
 </body>

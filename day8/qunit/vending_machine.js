@@ -58,8 +58,10 @@ var VendingMachine = function() {
 			update();
 			return true;
 		}else{
-			equal(true, true, 'test');
-			_oLog.write('돈이 모자랍니다.');
+			test("check Up/Down", function() {
+				equal(true, true, 'test');
+				_oLog.write('돈이 모자랍니다.');
+			});
 			update();
 			return false;
 		}
@@ -70,6 +72,7 @@ var VendingMachine = function() {
 		_insertCoin = 0;
 		update();
 		
+		if(typeof e == 'undefined') return;
 		if (e.preventDefault) e.preventDefault();
 		else e.returnValue = false;
 	};
@@ -103,6 +106,48 @@ var VendingMachine = function() {
 		addEvent(document.getElementById('btnReturn'), 'click', returnCoin);
 		
 		update();
+	};
+	
+	this.QUnitTest = function() {
+		
+		_oProductDisplay.testProductDisplay();
+		
+		test("returnCoin", function(){
+			_insertCoin+= 5000;
+			_walletMoney-= 5000;
+			returnCoin();
+			equal(_insertCoin, 0, '_elInsert Check');
+		});
+		
+		test("mistakeCoin", function(){
+			var nowMyCoin = _walletMoney;
+			mistakeCoin(1000);
+			
+			ok(nowMyCoin-1000 ==_walletMoney, '_walletMoney Check');
+		});
+		
+		test("insertCoin", function(){
+			_walletMoney = 3000;
+			_insertCoin = 0;
+			_paperMoneyCount = 0;
+			
+			var nowMyCoin = _walletMoney;
+			var nowInsertCoin = _insertCoin;
+			insertCoin(50);
+			insertCoin(100);
+			insertCoin(500);
+			insertCoin(1000);
+			
+			equal(_insertCoin, 1650, 'insertCoin Check');
+			
+			insertCoin(1000);
+			insertCoin(1000);
+			insertCoin(1000);
+			insertCoin(1000);
+			insertCoin(1000);
+			insertCoin(1000);
+			equal(_insertCoin, 2650, 'PaperMoneyCount Check');
+		});
 	};
 	
 	_init();
