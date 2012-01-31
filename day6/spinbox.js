@@ -6,13 +6,14 @@ if(!console){
 }
 
 //SpinBox
-var SpinBox = function(TextElement, UpElement, DownElement, Option) {
+var SpinBox = function(TextElement, UpElement, DownElement, Option, ChangeListener) {
 	
 	var _elText = TextElement;
 	var _oUp;
 	var _oDown;
 	var _Option = Option;
 	var _nValue=parseInt(_elText.value);
+	var _eChangeHandler;
 	
 	var onLeaveFocus = function(){
 		_nValue = parseInt(((_elText.value).match(/(^[-|+])|([0-9]+)/g)).join(''));
@@ -21,6 +22,7 @@ var SpinBox = function(TextElement, UpElement, DownElement, Option) {
 		checkRange();
 		update();
 		console.debug("leave: "+_nValue);
+		if(typeof _eChangeHandler == 'function') _eChangeHandler();
 	};
 	
 	var onChange = function() {
@@ -48,7 +50,10 @@ var SpinBox = function(TextElement, UpElement, DownElement, Option) {
 	};
 	
 	var update = function() {
-		_elText.value = _nValue;
+		if(_nValue != _elText.value){
+			_elText.value = _nValue;
+			if(typeof _eChangeHandler == 'function') _eChangeHandler();
+		}
 	};
 	
 	var init = function(){
@@ -57,6 +62,8 @@ var SpinBox = function(TextElement, UpElement, DownElement, Option) {
 		if(typeof _Option != 'object') _Option = {};
 		if(typeof _Option.value != 'undefined')
 			_nValue = parseInt(_Option.value);
+		
+		_eChangeHandler = ChangeListener;
 		
 		//KeppPressingButton
 		oUp = new KeepPressingButton(UpElement);
