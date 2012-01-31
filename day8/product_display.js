@@ -1,30 +1,38 @@
 //상품 목록
-var goods = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l'];
+var product = ['코카콜라', '펩시콜라', '칠성사이다', '사과드링크', '비트500', '봉봉오렌지', '옥수수 수염차', '류', '식혜', '조지아 오리지널'];
 
 /**
  * 상품 전시 영역 클래스
  */
-var GoodsDisplay = function(ShelfElement) {
+var ProductDisplay = function(ShelfElement) {
 	
-	var _aGoods = new Array();
+	var _aProduct = new Array();
 	var _elShelf = ShelfElement;
+	var _eClickHandler;
 	
 	var _onClick = function(e, a) {
-		console.debug(a);
-		_aGoods[a.index].sale();
+		if(typeof _eClickHandler == 'function'){
+			if(_eClickHandler(e, a)){
+				_aProduct[a.index].sale();
+			}
+		}
 	}
+	
+	this.setClickListener = function(Handler) {
+		_eClickHandler = Handler;
+	};
 	
 	var _init = function() {
 		
 		//상품 목록 랜덤 생성
 		for(var i=0; i<8; i++){
-			var j = Math.floor(Math.random()*goods.length);
+			var j = Math.floor(Math.random()*product.length);
 			var price = (Math.floor(Math.random()*8)+1)*100;
 			var amount = Math.floor(Math.random()*3)+1;
 			
-			_aGoods.push(new Goods(_elShelf, i, goods[j], price, amount));
-			_aGoods[i].setClickListener(_onClick);
-			goods.remove(j);
+			_aProduct.push(new Product(_elShelf, i, product[j], price, amount));
+			_aProduct[i].setClickListener(_onClick);
+			product.remove(j);
 		}
 		
 	};
@@ -34,9 +42,9 @@ var GoodsDisplay = function(ShelfElement) {
 
 /**
  * 상품 한개에 대한 클래스
- * DOM : <li class="good"><span class="name">얏호</span><span class="price">1000원</span></li>
+ * DOM : <li class="good"><span class="name">상품명</span><span class="price">1000원</span></li>
  */
-var Goods = function(ParentElement, Index, Name, Price, Amount) {
+var Product = function(ParentElement, Index, Name, Price, Amount) {
 
 	var _nIndex = Index;
 	var _obj;
@@ -86,15 +94,15 @@ var Goods = function(ParentElement, Index, Name, Price, Amount) {
 	var _init = function() {
 		//DOM Elements
 		_obj = document.createElement('li');
-		_obj.className = 'goods';
+		_obj.className = 'product';
 		
 		_elName = document.createElement('span');
 		_elName.className = 'name';
-		_elName.innerText = _sName;
+		_elName.innerHTML = _sName;
 		
 		_elPrice = document.createElement('span');
 		_elPrice.className = 'price';
-		_elPrice.innerText = _nPrice + '원';
+		_elPrice.innerHTML = _nPrice + '원';
 		
 		_obj.appendChild(_elName);
 		_obj.appendChild(_elPrice);

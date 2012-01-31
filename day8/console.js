@@ -9,7 +9,7 @@ var Console = function(Element, PageElement) {
 	
 	this.write = function(text) {
 		var line = document.createElement("p");
-		line.innerText = text;
+		line.innerHTML = text;
 		_elPage.appendChild(line);
 		_elElement.scrollTop = _elPage.offsetHeight;
 	};

@@ -7,7 +7,6 @@ function dragable(Element, TargetElement, dropCallback) {
 	var deltaX, deltaY;
 	
 	var _elClone;
-	//var _elParent = Element.parentNode;
 	
 	if(document.addEventListener) {
 		Element.addEventListener("mousedown", onMousedown, true);
@@ -32,7 +31,6 @@ function dragable(Element, TargetElement, dropCallback) {
 		orignY = rect.top+scrollY();//Element.offsetTop;
 		deltaX = startX - orignX;
 		deltaY = startY - orignY;
-		console.debug('startY:' +startY+', orignY:'+orignY+', deltaY:'+deltaY);
 		
 		_elClone = Element.cloneNode(true);
 		_elClone.removeAttribute('id');

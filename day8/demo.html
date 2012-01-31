@@ -5,9 +5,9 @@
 <title>자판기</title>
 <link rel="stylesheet" type="text/css" href="vending_machine.css"> 
 <script type="text/javascript" src="console.js"></script>
-<script type="text/javascript" src="goods_display.js"></script>
 <script type="text/javascript" src="dragable.js"></script>
-<script type="text/javascript" src="coin_panel.js"></script>
+<script type="text/javascript" src="product_display.js"></script>
+<script type="text/javascript" src="vending_machine.js"></script>
 </head>
 <body>
 
@@ -16,14 +16,14 @@
 <div id="display_panel">
 <ul id="shelf">
 <!-- 
-<li class="goods"><span class="name">얏호</span><span class="price">1000원</span></li>
-<li class="goods"></li>
-<li class="goods"></li>
-<li class="goods"></li>
-<li class="goods"></li>
-<li class="goods"></li>
-<li class="goods"></li>
-<li class="goods"></li>
+<li class="product"><span class="name">얏호</span><span class="price">1000원</span></li>
+<li class="product"></li>
+<li class="product"></li>
+<li class="product"></li>
+<li class="product"></li>
+<li class="product"></li>
+<li class="product"></li>
+<li class="product"></li>
  -->
 </ul>
 </div>
@@ -31,13 +31,14 @@
 <div id="insert">1000원</div>
 <a id="btnReturn" href="#">반환버튼</a>
 <div id="wallet">
-<ul id="coins">
-<li class="coin"><div class="money"></div><span class="money_name">50원</span></li>
-<li class="coin"><div class="money"></div><span class="money_name">100원</span></li>
-<li class="coin"><div class="money"></div><span class="money_name">500원</span></li>
-<li class="coin"><div class="money"></div><span class="money_name">1000원</span></li>
-</ul>
 <span id="my_money">지금 내 돈 : 10000원</span>
+<ul id="coins">
+<li class="coin"><div id="money50" class="money"></div><span class="money_name">50원</span></li>
+<li class="coin"><div id="money100" class="money"></div><span class="money_name">100원</span></li>
+<li class="coin"><div id="money500" class="money"></div><span class="money_name">500원</span></li>
+<li class="coin"><div id="money1000" class="money"></div><span class="money_name">1000원</span></li>
+</ul>
+
 </div>
 </div>
 <div id="console">
@@ -46,14 +47,7 @@
 </div>
 
 <script type="text/javascript">
-var log;
-log = new Console(document.getElementById('console'), document.getElementById('page'));
-log.write('test');
-
-var shelf = document.getElementById('shelf');
-var goodsDisplay = new GoodsDisplay(shelf);
-
-
+	var vendingMachine = new VendingMachine();
 </script>
 
 </body>
