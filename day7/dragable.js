@@ -25,10 +25,11 @@ function dragable(Element, TargetElement, dropCallback) {
 	function onMousedown(e){
 		if(!e) e = window.event;
 		
+		var rect = Element.getBoundingClientRect();
 		startX = e.clientX;
 		startY = e.clientY;
-		orignX = Element.offsetLeft;
-		orignY = Element.offsetTop;
+		orignX = rect.left; //Element.offsetLeft;
+		orignY = rect.top; //Element.offsetTop;
 		deltaX = startX - orignX;
 		deltaY = startY - orignY;
 		
@@ -67,9 +68,10 @@ function dragable(Element, TargetElement, dropCallback) {
 		if(!_bDown) return;
 		
 		_elParent.removeChild(_elClone);
+		var rect = TargetElement.getBoundingClientRect();
 		
-		if((e.clientX - deltaX) > TargetElement.offsetLeft-Element.offsetWidth && (e.clientX - deltaX) < TargetElement.offsetLeft+TargetElement.offsetWidth &&
-				(e.clientY - deltaY) > TargetElement.offsetTop-Element.offsetHeight && (e.clientY - deltaY) < TargetElement.offsetTop+TargetElement.offsetHeight){
+		if((e.clientX - deltaX) > rect.left-Element.offsetWidth && (e.clientX - deltaX) < rect.left+Element.offsetWidth &&
+				(e.clientY - deltaY) > rect.top-Element.offsetHeight && (e.clientY - deltaY) < rect.top+Element.offsetHeight){
 			if(typeof dropCallback == 'function')
 				dropCallback();
 		}
