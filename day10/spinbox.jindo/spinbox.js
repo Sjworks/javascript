@@ -1,3 +1,10 @@
+/**
+ * 
+ * 
+ * 
+ */
+
+
 //forIE
 if(!console){
 	var console = {
@@ -5,143 +12,126 @@ if(!console){
 	}
 }
 
-//SpinBox
-var SpinBox = function(TextElement, UpElement, DownElement, Option, ChangeListener) {
+var SpinBox = $Class({
+	_woText: null,
+	_oBtnUpn: null,
+	_oBtnDown: null,
+	_Option: null,
+	_nValue: 0,
+	_eChangeHandler: null,
 	
-	var _elText = TextElement;
-	var _oUp;
-	var _oDown;
-	var _Option = Option;
-	var _nValue=parseInt(_elText.value);
-	var _eChangeHandler;
-	
-	var onLeaveFocus = function(){
-		_nValue = parseInt(((_elText.value).match(/(^[-|+])|([0-9]+)/g)).join(''));
-		if(isNaN(_nValue)) _nValue = 0;
+	$init : function(TextElement, UpElement, DownElement, Option, ChangeListener) {
+		//wrapping
+		if(typeof TextElement == 'string')
+			this._woText = $Element($(TextElement));
+		else 
+			this._woText = $Element(TextElement);		
 		
-		checkRange();
-		update();
-		console.debug("leave: "+_nValue);
-		if(typeof _eChangeHandler == 'function') _eChangeHandler();
-	};
-	
-	var onChange = function() {
-		_nValue=parseInt(_elText.value);
-		console.debug("change: "+_nValue);
-	};
-	
-	var Inc = function(){
-		_nValue+=1;
-		checkRange();
-		update();
-	};
-	
-	var Dec = function(){
-		_nValue-=1;
-		checkRange();
-		update();
-	};
-	
-	var checkRange = function() {
-		if(typeof _Option.max == 'number')
-			_nValue = _nValue>_Option.max?_Option.max:_nValue;
-		if(typeof _Option.min == 'number')
-			_nValue = _nValue<_Option.min?_Option.min:_nValue;
-	};
-	
-	var update = function() {
-		if(_nValue != _elText.value){
-			_elText.value = _nValue;
-			if(typeof _eChangeHandler == 'function') _eChangeHandler();
-		}
-	};
-	
-	var init = function(){
-	
 		//Option
-		if(typeof _Option != 'object') _Option = {};
-		if(typeof _Option.value != 'undefined')
-			_nValue = parseInt(_Option.value);
+		this._Option = Option;
+		if(typeof this._Option != 'object') this._Option = {};
+		if(typeof this._Option.value != 'undefined')
+			this._nValue = parseInt(this._Option.value);
 		
-		_eChangeHandler = ChangeListener;
+		this._eChangeHandler = ChangeListener;
 		
 		//KeppPressingButton
-		oUp = new KeepPressingButton(UpElement);
-		oDown = new KeepPressingButton(DownElement);		
+		this._oBtnUp = new KeepPressingButton(UpElement);
+		this._oBtnDown = new KeepPressingButton(DownElement);		
 		
 		//Event
-		addEvent(_elText, 'blur', onLeaveFocus);
-		addEvent(_elText, 'change', onChange);
-		oUp.setPressEventListener(Inc);
-		oDown.setPressEventListener(Dec);
+		$Fn(this.onLeaveFocus, this).attach(this._woText, 'blur');
+		$Fn(this.onChange, this).attach(this._woText, 'change');
+		this._oBtnUp.setPressEventListener($Fn(this.inc, this).bind());
+		this._oBtnDown.setPressEventListener($Fn(this.dec, this).bind());
 		
-		update();
-	};
-	
-	init();
-};
+		this.update();
+	},
+	onLeaveFocus: function(event) {
+		this._nValue = parseInt(((this._woText.$value().value).match(/(^[-|+])|([0-9]+)/g)).join(''));
+		if(isNaN(this._nValue)) this._nValue = 0;
+		
+		this.checkRange();
+		this.update();
 
-//계속 눌림 버튼
-var KeepPressingButton = function(ButtonElement, Option) {
-	var _elButton = ButtonElement;
-	var _Option = Option;
-	var _fCallback;
-	var _tPress;
-	var _oTimer;
-	var _bPress = false;
-	var _bKeep = false;
-		
-	this.setPressEventListener = function(Callback) {
-		_fCallback = Callback;
-	};
-	
-	var onTime = function() {
-		if(typeof _fCallback == 'function') _fCallback('keep');
-		_oTimer = setTimeout(onTime, _Option.interval);
-		_bKeep = true;
-	}
-	
-	var onMouseDown = function() {
-		_bPress = true;
-		_tPress = new Date();
-		_oTimer = setTimeout(onTime, _Option.firstInterval);
-	};
-	
-	var onMouseUp = function() {
-		if(!_bPress) return;
-		_bPress = false;
-		if(!_bKeep){
-			if(typeof _fCallback == 'function') _fCallback('click');
+		if(typeof this._eChangeHandler == 'function') this._eChangeHandler();
+	},
+	onChange: function(event) {
+		this._nValue=parseInt(this._woText.$value().value);
+	},
+	inc: function() {
+		this._nValue+=1;
+		this.checkRange();
+		this.update();
+	},
+	dec: function() {
+		this._nValue-=1;
+		this.checkRange();
+		this.update();
+	},
+	checkRange: function() {
+		if(typeof this._Option.max == 'number')
+			this._nValue = this._nValue>this._Option.max?this._Option.max:this._nValue;
+		if(typeof this._Option.min == 'number')
+			this._nValue = this._nValue<this._Option.min?this._Option.min:this._nValue;
+	},
+	update: function() {
+		if(this._nValue != this._woText.$value().value){
+			this._woText.$value().value = this._nValue;
+			if(typeof this._eChangeHandler == 'function') this._eChangeHandler();
 		}
-		_bKeep = false;
-		clearTimeout(_oTimer);
-	};
+	}
+});
+
+var KeepPressingButton = $Class({
+	_woButton: null,
+	_Option: null,
+	_fHandler: null,
+	_tPress: null,
+	_nTimer: null,
+	_bPress: false,
+	_bKeep: false,
 	
-	var init = function(){
+	$init: function(ButtonElement, Option) {
+		//wrapping
+		if(typeof ButtonElement == 'string')
+			this._woButton = $Element($(ButtonElement));
+		else 
+			this._woButton = $Element(ButtonElement);	
+		
 		//Option
-		if(typeof _Option != 'object') _Option = {};
-		if(typeof _Option.firstInterval != 'number')
-			_Option.firstInterval = 500;
-		if(typeof _Option.interval != 'number')
-			_Option.interval = 100;
+		this._Option = Option
+		if(typeof this._Option != 'object') this._Option = {};
+		if(typeof this._Option.firstInterval != 'number')
+			this._Option.firstInterval = 500;
+		if(typeof this._Option.interval != 'number')
+			this._Option.interval = 100;
 		
 		//Event
-		addEvent(_elButton, 'mousedown', onMouseDown);
-		addEvent(document, 'mouseup', onMouseUp);
-	};
-	
-	init();
-};
-
-
-//이벤트 관련 함수(IE 호환)
-function addEvent(Element, EventType, Handler) {
-
-	if(document.addEventListener) {
-		//DOM 표준
-		Element.addEventListener(EventType, Handler, false);
-	}else if(document.attachEvent) {
-		//IE	
-		Element.attachEvent("on"+EventType, Handler);
+		$Fn(this.onMouseDown, this).attach(this._woButton, 'mousedown');
+		$Fn(this.onMouseUp, this).attach(this._woButton, 'mouseup');
+	},
+	onMouseDown: function() {
+		this._bPress = true;
+		this._tPress = new Date();
+		this._nTimer = setTimeout($Fn(this.onTime, this).bind(), this._Option.firstInterval);
+	},
+	onMouseUp: function() {
+		if(!this._bPress) return;
+		this._bPress = false;
+		if(!this._bKeep){
+			if(typeof this._fCallback == 'function') this._fCallback('click');
+		}
+		this._bKeep = false;
+		clearTimeout(this._nTimer);
+	},
+	onTime: function() {
+		if(typeof this._fCallback == 'function') this._fCallback('keep');
+		this._nTimer = setTimeout($Fn(this.onTime, this).bind(), this._Option.interval);
+		this._bKeep = true;
+	},
+	setPressEventListener: function(Handler) {
+		this._fCallback = Handler;
 	}
-};
+});
+
