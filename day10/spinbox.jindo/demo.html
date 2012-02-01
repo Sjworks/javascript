@@ -5,31 +5,23 @@
 <title>SpinBox Demo</title>
 <script type="text/javascript" src="jindo.min.js"></script>
 <script type="text/javascript" src="spinbox.js"></script>
-<script type="text/javascript">
-
-
-var spin_0;
-var spin_1;
-var kpb;
-window.onload = function() {
-	
-	kpb = new KeepPressingButton(document.getElementById('kpb'));
-	kpb.setPressEventListener(function(type){
-		console.debug('KeepPressingButton');
-	});
-	
-	
-	spin_0 = new SpinBox(document.getElementById('spin0_text'), document.getElementById('spin0_up'), document.getElementById('spin0_down'), {value: 200, max:300, min:100});
-	spin_1 = new SpinBox(document.getElementById('spin1_text'), document.getElementById('spin1_up'), document.getElementById('spin1_down'), {value: 200, max:300, min:100});
-
-}
-
-</script>
 </head>
 <body>
 <button id="kpb">KeepPressingButton Test</button><br/>
 <input id="spin0_text" type="text" value="0"><button id="spin0_up">▲</button><button id="spin0_down">▼</button><br/>
 <input id="spin1_text" type="text" value="0"><button id="spin1_up">▲</button><button id="spin1_down">▼</button>
+<script type="text/javascript">
+var spin_0;
+var spin_1;
+var kpb;
 
+kpb = new KeepPressingButton(document.getElementById('kpb'));
+kpb.setPressEventListener(function(type){
+	console.debug('KeepPressingButton');
+});
+
+spin_0 = new SpinBox(document.getElementById('spin0_text'), document.getElementById('spin0_up'), document.getElementById('spin0_down'), {value: 200, max:300, min:100});
+spin_1 = new SpinBox(document.getElementById('spin1_text'), document.getElementById('spin1_up'), document.getElementById('spin1_down'), {value: 200, max:300, min:100});
+</script>
 </body>
 </html>
