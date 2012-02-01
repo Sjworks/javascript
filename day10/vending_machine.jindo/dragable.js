@@ -1,91 +1,78 @@
+/**
+ * TODO: 옵션, 이벤트의 다양화(커서, 반투명도, 이벤트(드래그가 시작될때, 끝날때, 드래그 중일때, 다른 앨리먼트 위에 올때 등등..)
+ * TODO: Clone 앨리먼트를 생성할때 css 속성을 인라인으로 복제해서 드래그 되어야 하지 않을까?(인라인 과 id값으로 지정된 스타일이 있을지도 모르는데..)
+ */
 
-function dragable(Element, TargetElement, dropCallback) {
+$Element.prototype.dragable = function(TargetElement, DropHandler) {
 	var _bDown = false;
-	
 	var startX, startY;
 	var orignX, orignY;
 	var deltaX, deltaY;
 	
-	var _elClone;
+	var _woClone;
+	var _woTarget = $Element(TargetElement);
 	
-	if(document.addEventListener) {
-		Element.addEventListener("mousedown", onMousedown, true);
-		document.addEventListener("mousemove", onMousemove, true);
-		document.addEventListener("mouseup", onMouseup, true);
-	}
-	else if (document.attachEvent) {
-		Element.setCapture();
-		Element.attachEvent("onmousedown", onMousedown);
-		document.attachEvent("onmousemove", onMousemove);
-		document.attachEvent("onmouseup", onMouseup);
-		Element.attachEvent("onlosecapture", onMouseup);
-	}
 	
-	function onMousedown(e){
-		if(!e) e = window.event;
-			
-		var rect = Element.getBoundingClientRect();
-		startX = e.clientX;
-		startY = e.clientY;
-		orignX = rect.left+scrollX();//Element.offsetLeft;
-		orignY = rect.top+scrollY();//Element.offsetTop;
-		deltaX = startX - orignX;
-		deltaY = startY - orignY;
+	$Fn(onMousedown, this).attach(this, 'mousedown');
+	$Fn(onMousemove, this).attach(document, 'mousemove');
+	$Fn(onMouseup, this).attach(document, 'mouseup');
+	
+	
+	function onMousedown(event) {
+
+		var pos = event.pos();
+		startX = pos.pageX; startY = pos.pageY;
 		
-		_elClone = Element.cloneNode(true);
-		_elClone.removeAttribute('id');
+		var offset = this.offset();
+		orignX = offset.left; orignY = offset.top;
 		
-		_elClone.style.zIndex = 1000;
-		document.body.appendChild(_elClone);
+		deltaX = startX - orignX; deltaY = startY - orignY;
 		
-		if (e.stopPropagation) e.stopPropagation();
-		else e.cancelBubble = true;
+		_woClone = $Element(this.outerHTML());
+		_woClone.attr('id', null);
 		
-		if (e.preventDefault) e.preventDefault();
-		else e.returnValue = false;
+		_woClone.css('zIndex', '1000');
+		_woClone.css('position', 'absolute');
+		_woClone.appendTo(document.body);
+		
+		event.stop();
 		
 		_bDown = true;
-		onMousemove(e);
-	}
+		onMousemove(event);
+	};
 	
-	function onMousemove(e){
-		if(!e) e = window.event;
+	function onMousemove(event) {
+		
 		if(!_bDown) return;
 		
-		_elClone.style.left = (e.clientX - deltaX) + "px";
-		_elClone.style.top = (e.clientY - deltaY) + "px";
-		
-		if(e.stopPropagation) e.stopPropagation();
-		else e.cancelBubble = true;
-	}
+		var pos = event.pos();
+		_woClone.offset(pos.pageY - deltaY, pos.pageX - deltaX);
+				
+		event.stop($Event.CANCEL_BUBBLE);
+	};
 	
-	function onMouseup(e){
-		if(!e) e = window.event;
+	function onMouseup(event) {
 		if(!_bDown) return;
 		
-		var targetRect = TargetElement.getBoundingClientRect();
-		var cloneRect = _elClone.getBoundingClientRect();
-		var targetDrop;	
-		if(cloneRect.right > targetRect.left && cloneRect.left < targetRect.right &&
-				cloneRect.top < targetRect.bottom && cloneRect.bottom > targetRect.top){
-			targetDrop = true;
-		} else {
-			targetDrop = false;
+		if(_woTarget != null){
+			var targetRect = _woTarget.$value().getBoundingClientRect();
+			var cloneRect = _woClone.$value().getBoundingClientRect();
+			var targetDrop;	
+			if(cloneRect.right > targetRect.left && cloneRect.left < targetRect.right &&
+					cloneRect.top < targetRect.bottom && cloneRect.bottom > targetRect.top){
+				targetDrop = true;
+			} else {
+				targetDrop = false;
+			}
+			if(typeof DropHandler == 'function')
+				DropHandler(targetDrop);
 		}
-		if(typeof dropCallback == 'function')
-			dropCallback(targetDrop);
 	
-		document.body.removeChild(_elClone);
+		_woClone.leave();
 		_bDown = false;
-		if(e.stopPropagation) e.stopPropagation();
-		else e.cancelBubble = true;		
-	}
+		
+		event.stop($Event.CANCEL_BUBBLE);
+	};
 	
-	function scrollX() {
-		return window.pageXOffset ? window.pageXOffset : document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft;
-	}
-	function scrollY() {
-		return window.pageYOffset ? window.pageYOffset : document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
-	}
-
-}
+	return this;
+};

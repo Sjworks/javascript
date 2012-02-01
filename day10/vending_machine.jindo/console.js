@@ -1,19 +1,22 @@
 
-var Console = function(Element, PageElement) {
-	var _elElement = Element;
-	var _elPage = PageElement;
-	
-	this.clear = function() {
-		_elPage.innerHTML = "";
-	};
-	
-	this.write = function(text) {
-		var line = document.createElement("p");
-		line.innerHTML = text;
-		_elPage.appendChild(line);
-		_elElement.scrollTop = _elPage.offsetHeight;
-	};
-}
+var Console = $Class({
+	_woElement: null,
+	_woPage: null,
+	$init : function(Element){
+		this._woElement = $Element(Element);
+		this._woPage = this._woElement.first();
+	},
+	clear : function() {
+		this._woPage.empty();
+	},
+	write : function(Text) {
+		var p = $Element('<p>'+Text+'</p>')
+		p.appendTo(this._woPage);
+		
+		this._woElement.$value().scrollTop = this._woPage.height();
+	}
+});
+
 
 //이벤트 관련 함수(IE 호환)
 function addEvent(Element, EventType, Handler) {
