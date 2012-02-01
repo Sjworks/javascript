@@ -23,17 +23,20 @@ background-color: blue;
 border: solid 2px black;
 }
 </style>
+<script type="text/javascript" src="jindo.min.js"></script>
 <script type="text/javascript" src="dragable.js"></script>
-<script type="text/javascript">
-window.onload = function(){
-	var drag = document.getElementById('drag');
-	dragable(drag, document.getElementById('drop'), function(target){ if(target)alert('Drop'); });
-	
-}
-</script>
 </head>
 <body>
 <div id="drag" class="dragable">dragable</div>
 <div id="drop" class="target">target</div>
+
+
+<script type="text/javascript">
+
+var woDrag = $Element('drag');
+woDrag.dragable('drop', function(target){ if(target)alert('Drop'); });
+
+</script>
+
 </body>
 </html>
