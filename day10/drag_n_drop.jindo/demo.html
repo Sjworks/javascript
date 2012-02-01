@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Drag & Drop Demo</title>
+<style type="text/css">
+.dragable {
+position: absolute;;
+left:100px;
+top:200px;
+width: 70px;
+height: 70px;
+background-color: red;
+border: solid 2px black;
+}
+.target {
+position: absolute;
+left: 300px;
+top: 150px;
+width: 70px;
+height: 70px;
+background-color: blue;
+border: solid 2px black;
+}
+</style>
+<script type="text/javascript" src="dragable.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+	var drag = document.getElementById('drag');
+	dragable(drag, document.getElementById('drop'), function(target){ if(target)alert('Drop'); });
+	
+}
+</script>
+</head>
+<body>
+<div id="drag" class="dragable">dragable</div>
+<div id="drop" class="target">target</div>
+</body>
+</html>
