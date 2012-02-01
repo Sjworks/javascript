@@ -1,0 +1,134 @@
+@CHARSET "UTF-8";
+
+a {
+	text-decoration: none;
+}
+
+
+#display_panel {
+	width: 480px;
+	height: 290px;
+	background-color: #5DC1E3;
+	padding: 0 0 25px 20px;
+}
+
+#shelf {
+	width: 100%;
+	height: 100%;
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+.product {
+	position: relative;
+	float: left;
+	width: 100px;
+	height:120px;
+	background-color: #ACF9FE;
+	margin: 25px 20px 0 0; 
+	cursor: pointer;
+}
+.product .name {
+	position: absolute;
+	
+}
+.product .price {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	height: 20px;
+	text-align: center;
+	background-color: #FFFFD0;
+	font-size: 16px;
+}
+.product.soldout .price {
+	background-color: #FF4D50;
+	text-decoration: line-through;	
+}
+
+#coin_panel {
+	position: relative;
+	width: 500px;
+	height: 270px;
+	background-color: #DCDCDC;	
+}
+#insert {
+	position: absolute;
+	width: 125px;
+	height: 30px;
+	padding: 5px;
+	background-color: red;
+	top: 100px;
+	left: 50px;
+	text-align: right;
+	font-size: 25px;
+	font-weight: bold;
+}
+#btnReturn {
+	position: absolute;
+	background-color: blue;
+	width: 135px;
+	font-size: 25px;
+	font-weight: bold;
+	text-align: center;
+	left: 50px;
+	top: 200px;
+	padding: 5px 0 5px 0;
+	color: white;
+}
+#wallet {
+	position: absolute;
+	background-color: white;
+	width: 150px;
+	height: 250px;
+	left: 330px;
+	top: 10px;
+}
+#coins {
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+}
+.coin {
+	position: relative;
+	width: 120px;
+	height: 50px;
+	float: left;
+	margin-top: 5px;
+	margin-left: 5px;
+}
+.money {
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	background: green;
+}
+.money_name {
+	position: absolute;
+	top: 15px;
+	left: 55px;
+	font-size: 16px;
+}
+#my_money {
+	position: absolute;
+	width: 100%;
+	bottom: 0px;
+	text-align: center;
+	font-size: 13px;
+}
+
+#console {
+	width: 500px;
+	height: 100px;
+	background-color: black;
+	color: #E1E1E1;
+	overflow: scroll;
+	overflow-x: hidden;
+}
+#page {
+	width: 100%;
+}
+#page p {
+	margin: 5px 0 5px 0;
+}

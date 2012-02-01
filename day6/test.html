@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>SpinBox Demo</title>
+<script type="text/javascript" src="spinbox.test.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen" />
+<script type="text/javascript" src="http://code.jquery.com/qunit/git/qunit.js"></script>
+<script type="text/javascript">
+
+
+var spin_0;
+var spin_1;
+var kpb;
+window.onload = function() {
+	
+	kpb = new KeepPressingButton(document.getElementById('kpb'), {firstInterval: 400, interval:50});
+	kpb.setPressEventListener(function(type){
+		console.debug('KeepPressingButton');
+	});
+	kpb.testInit(400,50);
+	
+	spin_0 = new SpinBox(document.getElementById('spin0_text'), document.getElementById('spin0_up'), document.getElementById('spin0_down'), {value: 200, max:300, min:100});
+	spin_1 = new SpinBox(document.getElementById('spin1_text'), document.getElementById('spin1_up'), document.getElementById('spin1_down'), {value: 200, max:300, min:100});
+	
+	spin_0.test();
+	spin_1.test();
+}
+
+</script>
+</head>
+<body>
+<button id="kpb">KeepPressingButton Test</button><br/>
+<input id="spin0_text" type="text" value="0"><button id="spin0_up">▲</button><button id="spin0_down">▼</button><br/>
+<input id="spin1_text" type="text" value="0"><button id="spin1_up">▲</button><button id="spin1_down">▼</button>
+<h1 id="qunit-header">QUnit example</h1>
+ <h2 id="qunit-banner"></h2>
+ <div id="qunit-testrunner-toolbar"></div>
+ <h2 id="qunit-userAgent"></h2>
+ <ol id="qunit-tests"></ol>
+ <div id="qunit-fixture">test markup, will be hidden</div>
+</body>
+</html>

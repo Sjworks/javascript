@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Spin</title>
+<link rel="stylesheet" type="text/css" href="spin.css">  
+<script type="text/javascript" src="spin.js"></script>
+<script type="text/javascript" src="spinbox.js"></script>
+</head>
+<body>
+<div id="preview">
+<canvas id="spin" width="200" height="200"></canvas>
+</div>
+<div id="control">
+<label>Lines: </label><input id="line" type="text" value="12"></input><button id="line_up">▲</button><button id="line_down">▼</button><br/>
+<label>Length: </label><input id="length" type="text" value="7"></input><button id="length_up">▲</button><button id="length_down">▼</button><br/>
+<label>Width: </label><input id="width" type="text" value="4"></input><button id="width_up">▲</button><button id="width_down">▼</button><br/>
+<label>Radius: </label><input id="radius" type="text" value="10"></input><button id="radius_up">▲</button><button id="radius_down">▼</button><br/>
+<label>Speed: </label><input id="speed" type="text" value="1"></input><button id="speed_up">▲</button><button id="speed_down">▼</button><br/>
+<label>Color R: </label><input id="r" type="text" value="255"></input><button id="r_up">▲</button><button id="r_down">▼</button><br/>
+<label>Color G: </label><input id="g" type="text" value="255"></input><button id="g_up">▲</button><button id="g_down">▼</button><br/>
+<label>Color B: </label><input id="b" type="text" value="255"></input><button id="b_up">▲</button><button id="b_down">▼</button><br/>
+</div>
+<script type="text/javascript">
+var spin = new Spinner(document.getElementById('spin'), {}, changeSetting);
+console.debug(spin.getOption());
+
+new SpinBox(document.getElementById('line'), document.getElementById('line_up'), document.getElementById('line_down'), {value: 12, max:16, min:6}, changeSetting);
+new SpinBox(document.getElementById('length'), document.getElementById('length_up'), document.getElementById('length_down'), {value: 7, max:30, min:0}, changeSetting);
+new SpinBox(document.getElementById('width'), document.getElementById('width_up'), document.getElementById('width_down'), {value: 4, max:20, min:2}, changeSetting);
+new SpinBox(document.getElementById('radius'), document.getElementById('radius_up'), document.getElementById('radius_down'), {value: 10, max:40, min:0}, changeSetting);
+new SpinBox(document.getElementById('speed'), document.getElementById('speed_up'), document.getElementById('speed_down'), {value: 1, max:4, min:1}, changeSetting);
+new SpinBox(document.getElementById('r'), document.getElementById('r_up'), document.getElementById('r_down'), {value: 255, max:255, min:0}, changeSetting);
+new SpinBox(document.getElementById('g'), document.getElementById('g_up'), document.getElementById('g_down'), {value: 255, max:255, min:0}, changeSetting);
+new SpinBox(document.getElementById('b'), document.getElementById('b_up'), document.getElementById('b_down'), {value: 255, max:255, min:0}, changeSetting);
+
+function changeSetting() {
+	console.debug('change');
+	spin.setOption('line', parseInt(document.getElementById('line').value));
+	spin.setOption('length', parseInt(document.getElementById('length').value));
+	spin.setOption('width', parseInt(document.getElementById('width').value));
+	spin.setOption('radius', parseInt(document.getElementById('radius').value));
+	spin.setOption('speed', parseInt(document.getElementById('speed').value));
+	spin.setOption('color', {r: parseInt(document.getElementById('r').value),
+							g: parseInt(document.getElementById('g').value),
+							b: parseInt(document.getElementById('b').value)});
+}
+</script>
+</body>
+</html>

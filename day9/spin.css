@@ -1,0 +1,20 @@
+@CHARSET "UTF-8";
+
+#preview {
+	background-color: #333;
+	color: white;
+	width: 200px;
+	height: 200px;
+	margin: 0 20px 0 20px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	overflow: hidden;
+	float: left;
+}
+#control label {
+	width: 80px;
+	display: block;
+	float: left;
+	line-height: 25px;
+}
