@@ -3,14 +3,10 @@
  * 
  * 
  */
-
-
-//forIE
-if(!console){
-	var console = {
-		debug : function(){}
-	}
-}
+/**
+ * TODO: SpinBox를 생성할때 앨리먼트를 전달 하는 방식을 바꿀 필요가 있지 않을까. 버튼 하나하나 id를 부여하는 소요가 큼(부모 앨리먼트에 id를 지정하게 하고, 자식 앨리먼트는 알아서 찾도록 수정?)
+ * TODO: 이벤트를 전달할때 주어질 파라메터 정리 필요
+ */
 
 var SpinBox = $Class({
 	_woText: null,
@@ -22,10 +18,7 @@ var SpinBox = $Class({
 	
 	$init : function(TextElement, UpElement, DownElement, Option, ChangeListener) {
 		//wrapping
-		if(typeof TextElement == 'string')
-			this._woText = $Element($(TextElement));
-		else 
-			this._woText = $Element(TextElement);		
+		this._woText = $Element(TextElement);
 		
 		//Option
 		this._Option = Option;
@@ -48,7 +41,7 @@ var SpinBox = $Class({
 		this.update();
 	},
 	onLeaveFocus: function(event) {
-		this._nValue = parseInt(((this._woText.$value().value).match(/(^[-|+])|([0-9]+)/g)).join(''));
+		this._nValue = parseInt((this._woText.text().match(/(^[-|+])|([0-9]+)/g)).join(''));
 		if(isNaN(this._nValue)) this._nValue = 0;
 		
 		this.checkRange();
@@ -57,7 +50,7 @@ var SpinBox = $Class({
 		if(typeof this._eChangeHandler == 'function') this._eChangeHandler();
 	},
 	onChange: function(event) {
-		this._nValue=parseInt(this._woText.$value().value);
+		this._nValue=parseInt(this._woText.text());
 	},
 	inc: function() {
 		this._nValue+=1;
@@ -76,8 +69,8 @@ var SpinBox = $Class({
 			this._nValue = this._nValue<this._Option.min?this._Option.min:this._nValue;
 	},
 	update: function() {
-		if(this._nValue != this._woText.$value().value){
-			this._woText.$value().value = this._nValue;
+		if(this._nValue != this._woText.text()){
+			this._woText.text(this._nValue);
 			if(typeof this._eChangeHandler == 'function') this._eChangeHandler();
 		}
 	}
@@ -94,10 +87,7 @@ var KeepPressingButton = $Class({
 	
 	$init: function(ButtonElement, Option) {
 		//wrapping
-		if(typeof ButtonElement == 'string')
-			this._woButton = $Element($(ButtonElement));
-		else 
-			this._woButton = $Element(ButtonElement);	
+		this._woButton = $Element(ButtonElement);	
 		
 		//Option
 		this._Option = Option
