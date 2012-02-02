@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Jindo Component를 이용한 달력 만들기</title>
 <script type="text/javascript" src="jindo.min.js"></script>
 <script type="text/javascript" src="jindo.Component.js"></script>
 <script type="text/javascript" src="calendar.js"></script>
@@ -51,29 +51,28 @@
     width: 60px;
     display: inline-block;
 }
-#calendar_layer table {width:175px;margin:0 auto;text-align:center;}
-#calendar_layer table *{font-family:tahoma !important;font-size:12px;}
-#calendar_layer table td{width:25px;height:16px;text-align:center;color:#000000;}
-#calendar_layer table td a{display:block;height:15px;padding-top:1px;color:#000000;}
-#calendar_layer table td a:hover{background:#edf4fe;color:#6d6d6d;text-decoration:none !important;font-family:tahoma !important;}
-#calendar_layer table td a:visited,
-#calendar_layer table td a:active{color:#000000;text-decoration:none !important;}
-#calendar_layer table .selected{background:#edf4fe;color:#6d6d6d;}
-#calendar_layer table .selected a{color:#6d6d6d;text-decoration:none;}
-#calendar_layer table .sun{color:#e82828;}
-#calendar_layer table .sun a,
-#calendar_layer table .sun a:visited,
-#calendar_layer table .sun a:hover,
-#calendar_layer table .sun a:active{color:#e82828 !important;}
-#calendar_layer table .today{background:#6595db;color:#ffffff;}
-#calendar_layer table .today a{font-weight:bold;text-decoration:none;color:#fff}
-#calendar_layer table .today a:hover,
-#calendar_layer table .today a:visited,
-#calendar_layer table .today a:active{background:#6595db;color:#fff}
+#calendar_layer table {
+	width:175px;
+	margin:0 auto;
+	text-align:center;
+}
+#calendar_layer table * {
+	font-family:tahoma !important;
+	font-size:12px;
+}
+#calendar_layer table td {
+	width:25px;
+	height:16px;
+	text-align:center;
+	color:#000000;
+}
+#calendar_layer table .date { cursor: pointer; }
+#calendar_layer table .date:hover { background:#6595db; }
+#calendar_layer table .sun { color:#e82828; }
+#calendar_layer table .today { background:#6595db;color:#ffffff; }
 #calendar_layer table .prev-month.date,
 #calendar_layer table .next-month.date {opacity: 0.2; filter: alpha(opacity=20);}
-#calendar_layer table .noselect span{background:none !important;color:#d1d1d1 !important;}
-#calendar_layer table .sun span{background:none !important;color:#eca9a9 !important;}	
+	
 </style>
 
 </head>
