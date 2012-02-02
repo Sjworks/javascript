@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Jindo Component를 이용한 달력 만들기</title>
+<script type="text/javascript" src="jindo.min.js"></script>
+<script type="text/javascript" src="jindo.Component.js"></script>
+<script type="text/javascript" src="calendar.js"></script>
+<style type="text/css">
+
+#calendar_layer {
+	width:195px;
+	padding-bottom:9px;
+	border:1px solid #777;
+	background:#ffffff;
+}
+#calendar_layer div {
+	margin-bottom:10px;
+	padding:7px 0 9px 0px;
+	text-align:center;
+	background:#f6f6f6;
+	vertical-align:top;
+}
+
+#calendar_layer div .btn-prev-year {
+	font:11px dotum;
+	white-space:nowrap;
+	letter-spacing:-1px;
+}
+#calendar_layer div .btn-prev-month {
+	font:11px dotum;
+	white-space:nowrap;
+	letter-spacing:-1px;
+}
+#calendar_layer div .title {
+	font-family:verdana;
+	font-size:12px;
+	color:#383838;
+}
+#calendar_layer div .btn-next-month {
+	font:11px dotum;
+	white-space:nowrap;
+	letter-spacing:-1px;
+}
+#calendar_layer div .btn-next-year {
+	font:11px dotum;
+	white-space:nowrap;
+	letter-spacing:-1px;
+}
+#calendar_layer .title { 
+    width: 60px;
+    display: inline-block;
+}
+#calendar_layer table {
+	width:175px;
+	margin:0 auto;
+	text-align:center;
+}
+#calendar_layer table * {
+	font-family:tahoma !important;
+	font-size:12px;
+}
+#calendar_layer table td {
+	width:25px;
+	height:16px;
+	text-align:center;
+	color:#000000;
+}
+#calendar_layer table .date { cursor: pointer; }
+#calendar_layer table .date:hover { background:#6595db; }
+#calendar_layer table .sun { color:#e82828; }
+#calendar_layer table .today { background:#6595db;color:#ffffff; }
+#calendar_layer table .prev-month.date,
+#calendar_layer table .next-month.date {opacity: 0.2; filter: alpha(opacity=20);}
+	
+</style>
+
+</head>
+<body>
+
+<div id="calendar_layer">
+<div>
+<a href="#" class="btn-prev-year">&lt;&lt;</a>
+<a href="#" class="btn-prev-month">&lt;</a>
+<strong class="title"> 2002/01</strong>  
+<a href="#" class="btn-next-month">&gt;</a>
+<a href="#" class="btn-next-year">&gt;&gt;</a>
+</div>
+<table>
+<thead>
+<tr>
+<th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>
+</tr>
+</thead>
+<tbody>
+<tr class="week">
+<td class="date prev-mon sun">30</td>
+<td class="date prev-mon">31</td>
+<td class="date selected">1</td>
+<td class="date">2</td>
+<td class="date">3</td>
+<td class="date">4</td>
+<td class="date sat">5</td>
+</tr>
+<tr class="week">
+<td class="date sun">6</td>
+<td class="date">7</td>
+<td class="date">8</td>
+<td class="date">9</td>
+<td class="date">10</td>
+<td class="date">11</td>
+<td class="date sat">12</td>
+</tr>
+<tr class="week">
+<td class="date sun">13</td>
+<td class="date">14</td>
+<td class="date">15</td>
+<td class="date">16</td>
+<td class="date">17</td>
+<td class="date">18</td>
+<td class="date sat">19</td>
+</tr>
+<tr class="week">
+<td class="date sun">20</td>
+<td class="date">21</td>
+<td class="date">22</td>
+<td class="date">23</td>
+<td class="date">24</td>
+<td class="date">25</td>
+<td class="date sat">26</td>
+</tr>
+<tr class="week">
+<td class="date sun">27</td>
+<td class="date">28</td>
+<td class="date">29</td>
+<td class="date">30</td>
+<td class="date">31</td>
+<td class="date next-mon">1</td>
+<td class="date next-mon sat">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<script type="text/javascript">
+var c = new Calendar('calendar_layer');
+c.attach('clickdate', function(e){
+	alert(e.nYear+'년 '+e.nMonth+'월 '+e.nDate+'월');
+});
+//c._test();
+</script>
+
+
+</body>
+</html>
