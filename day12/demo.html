@@ -2,9 +2,108 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>JINDO!!</title>
+<script type="text/javascript" src="jindo.min.js"></script>
+<script type="text/javascript" src="jindo_component.js"></script>
+<style type="text/css">
+body {margin:0; padding:0; }
+.fog { position:absolute; left:0; top:0; padding:0; margin:0; border:0;	width:100px; height:100px; background-color:#000; opacity:0; }
+.draggable { position:absolute; width:50px; height:50px; background-color:#f00; left:50px; top:50px; padding:10px; border:1px solid #000; cursor:move; }
+.phantom { position:absolute; width:50px; height:50px; background-color: pink; padding:10px; border:1px solid #000; cursor:move; z-index:1000; }
+.droppable { position:absolute; width:50px; height:50px; background-color:#00f; left:200px; top:200px; padding:10px; border:1px solid #000; cursor:move; color:white; text-align: center; }
+.draggable.rollover-over {background-color: pink; z-index: 500; }
+.droppable.drag-over {background-color: skyblue; }
+</style>
 </head>
 <body>
+<!-- <div class="draggable"></div>
+<div class="droppable">0</div> -->
 
+
+<script type="text/javascript">
+var oDocSize = $Document(document).clientSize();
+var nDrag = Math.floor(Math.random()*10)+1;
+var nDrop = Math.floor(Math.random()*10)+1;
+
+for(var i=0; i<nDrag; i++){
+	var nX = Math.floor(Math.random()*(oDocSize.width-52));
+	var nY = Math.floor(Math.random()*(oDocSize.height-52));
+	
+	var welDrag = $Element("<div class=\"draggable\"></div>");
+	welDrag.css({left: nX+'px', top: nY+'px'});
+	welDrag.appendTo(document.body);
+}
+
+for(var i=0; i<nDrop; i++){
+	var nX = Math.floor(Math.random()*(oDocSize.width-52));
+	var nY = Math.floor(Math.random()*(oDocSize.height-52));
+	
+	var welDrop = $Element("<div class=\"droppable\">0</div>");
+	welDrop.css({left: nX+'px', top: nY+'px'});
+	welDrop.appendTo(document.body);
+}
+
+var oTransition = new jindo.Transition({fEffect : jindo.Effect.easeOut});
+var oDragStartPos = {};
+var elCloneDrag = null;
+var oDragArea = new jindo.DragArea(document);
+var oDropArea = new jindo.DropArea(document, { sClassName : 'droppable', oDragInstance : oDragArea });
+var oFoggy = new jindo.Foggy();
+oFoggy.getFog().onclick = function() { oFoggy.hide(); };
+$Fn(function(e){ console.debug(oFoggy.show(e.element)); }, window).attach($$(".droppable"),"click");  
+var oRolloverArea = new jindo.RolloverArea(document, {sClassName : 'draggable', htStatus : {sOver : 'over', sDown : 'down'}});
+
+oTransition.attach("end", function(){
+	$Element(elCloneDrag).leave();
+	elCloneDrag = null;
+});
+
+oDragArea.attach({
+	'dragStart' :  function(oCustomEvent){
+		if(elCloneDrag) {
+			oTransition.abort();
+			$Element(elCloneDrag).leave();
+			elCloneDrag = null;
+		}
+		
+		oDragStartPos = {left: $Element(oCustomEvent.elDrag).css('left'), top: $Element(oCustomEvent.elDrag).css('top')};
+		elCloneDrag = oCustomEvent.elDrag.cloneNode(true);
+		var welCloneDrag = $Element(elCloneDrag);
+		var welDrag= $Element(oCustomEvent.elDrag);
+		welCloneDrag.css($Element(oCustomEvent.elDrag).css());
+		welCloneDrag.attr('class', 'phantom');
+		welCloneDrag.css({left:welDrag.css('left'), top:welDrag.css('top')});
+		welCloneDrag.attr('id', null);
+		
+		$Element(elCloneDrag).appendTo($Element(oCustomEvent.elDrag).parent(null, 1)[0]);
+		oCustomEvent.elDrag = elCloneDrag;
+	},
+});
+
+oDropArea.attach({
+	'over' : function(oEvent) {
+		$Element(oEvent.elDrop).addClass('drag-over');
+	},
+	'out' : function(oEvent) {
+		$Element(oEvent.elDrop).removeClass('drag-over');
+	},
+	'dragEnd' : function(oEvent) {
+		if(oEvent.aDrop.length == 0){
+			if(elCloneDrag){
+				oTransition.start(500, elCloneDrag, {'@left':oDragStartPos.left, '@top':oDragStartPos.top});
+			}
+		}else{
+			$Element(elCloneDrag).leave();
+			elCloneDrag = null;		
+			for(var i=0; i<oEvent.aDrop.length; i++){
+				var welDrop = $Element(oEvent.aDrop[i]);
+				welDrop.text(parseInt(welDrop.text())+1);
+				welDrop.removeClass('drag-over');
+			}
+		}
+	}
+});
+
+</script>
 </body>
 </html>
